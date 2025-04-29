@@ -11,6 +11,16 @@ Feature: update Pets info
       | fileName | statusCode | updatedFile|
       | createPet.json| 200   | createPet2.json |
 
+  Scenario Outline: update pet with invalid payload
+    Given payload for creating pet is ready <fileName>
+    When user sends a POST request
+    And verify response has a pet details as per json file <updatedFile>
+    When user sends a PUT request with updated pet data <updatedFile>
+    Then response should be successful with status code <errorStatusCode>
+    Examples:
+      | fileName | statusCode | updatedFile| errorStatusCode |
+      | createPet.json| 200   | invalidCreatePet.json | 400  |
+
 
   Scenario Outline: update pet name and status
     Given payload for creating pet is ready <fileName>
@@ -22,6 +32,16 @@ Feature: update Pets info
     Examples:
       | fileName | statusCode |
       | createPet.json| 200   |
+
+  Scenario Outline: update pet name and status with invalid pet id
+    Given payload for creating pet is ready <fileName>
+    When user sends a POST request
+    Then response should be successful with status code <statusCode>
+    When user sends a PUT request to update pet name and status with no petid
+    Then response should be successful with status code <errorStatusCode>
+    Examples:
+      | fileName | statusCode | errorStatusCode |
+      | createPet.json| 200   | 404             |
 
   Scenario Outline: update pet with image
     Given payload for creating pet is ready <fileName>

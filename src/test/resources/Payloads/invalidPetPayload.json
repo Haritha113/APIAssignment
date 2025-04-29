@@ -1,0 +1,16 @@
+{
+  "id": "abc",
+  "name": "Rakhi",
+  "status": true,
+  "category": {
+    "id": 1,
+    "name": "Dogs"
+  },
+  "photoUrls": ["http://example.com/photo1.jpg"],
+  "tags": [
+    {
+      "id": 1211,
+      "name": "cute"
+    }
+  ]
+}

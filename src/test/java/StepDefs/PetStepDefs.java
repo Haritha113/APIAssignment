@@ -2,6 +2,7 @@ package StepDefs;
 
 import Constants.PetConstants;
 import Steps.PetSteps;
+import Utils.CommonMethods;
 import Utils.PetUtil;
 import Utils.TestData;
 import io.cucumber.java.en.And;
@@ -17,12 +18,13 @@ public class PetStepDefs {
 
     @Steps
     PetSteps petSteps;
+    CommonMethods commonMethods;
 
     @Given("^payload for creating pet is ready (.*)$")
     public void validPetPayload(String fileName) throws IOException {
 //        String[] eachFile = fileName.split(",");
 //        for(String file:eachFile) {
-            TestData.createPetPayload = petSteps.createPetPayloadByFileRead(fileName);
+            TestData.createPetPayload = commonMethods.createPayloadByFileRead(fileName);
 //        }
         System.out.println(TestData.createPetPayload);
     }
@@ -31,7 +33,7 @@ public class PetStepDefs {
     @When("user sends a POST request")
     public void createPetPostRequest() {
         petSteps.createPetRequest(TestData.createPetPayload);
-        TestData.petId = SerenityRest.lastResponse().jsonPath().getLong("id");
+        TestData.petId = SerenityRest.lastResponse().jsonPath().getInt("id");
     }
 
     @Then("response should be successful with status code {int}")
@@ -56,13 +58,19 @@ public class PetStepDefs {
     }
 
     @When("^user sends a GET request for pet$")
-    public void userSendGETReqByPetId() {
-            petSteps.getPetReqById();
+    public void reqPetByPetId() {
+            petSteps.getPetReqById(TestData.petId);
+            petSteps.verifyPetIdInGetPetIdReq(TestData.petId);
+    }
+
+    @When("^user sends a GET request for pet with invalid id$")
+    public void reqPetByInvalidPetId() {
+        petSteps.getPetReqById(Integer.parseInt(PetUtil.generateRandomPetName()));
     }
 
     @When("^user sends a PUT request with updated pet data (.*)$")
     public void userSendsAPUTReq(String fileName) throws IOException {
-        TestData.createPetPayload = petSteps.createPetPayloadByFileRead(fileName);
+        TestData.createPetPayload = commonMethods.createPayloadByFileRead(fileName);
         petSteps.updatePetReq(TestData.createPetPayload);
     }
 
@@ -75,7 +83,7 @@ public class PetStepDefs {
     public void userSendsAPUTRequestToUpdatePetNameAndStatus() {
             String randomPetName = PetUtil.generateRandomPetName();
             String status = PetConstants.AVAILABLE;
-            petSteps.updatePetNameAndStatus(randomPetName,status);
+            petSteps.updatePetNameAndStatus(randomPetName,status,TestData.petId);
     }
 
     @Then("verify updated pet image$")
@@ -99,7 +107,14 @@ public class PetStepDefs {
     }
 
     @When("^user sends a GET request for pet by status (.*)$")
-    public void userSendsAGETRequestForPetByStatus(String status) {
+    public void getPetByStatus(String status) {
         petSteps.getPetReqByStatus(status);
+    }
+
+    @When("user sends a PUT request to update pet name and status with no petid")
+    public void updatePetWithNoPetid() {
+        String randomPetName = PetUtil.generateRandomPetName();
+        String status = PetConstants.SOLD;
+        petSteps.updatePetNameAndStatus(randomPetName,status,Integer.valueOf(PetUtil.generateRandomPetName()));
     }
 }

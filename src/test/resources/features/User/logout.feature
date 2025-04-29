@@ -1,21 +1,21 @@
-Feature: verify login Users
+Feature: verify logout User behaviour
 
-  Scenario Outline: login user with username and password
+  Scenario Outline: logout user with username and password
     Given payload for creating random user is ready
     When user sends a POST request for creating user
     Then response should be successful with status code <statusCode>
-    When user sends GET request to login
+    When user sends GET request to logout
     Then response should be successful with status code <statusCode>
 
     Examples:
       | statusCode |
       | 200   |
 
-  Scenario Outline: login user with invalid username and password
+  Scenario Outline: logout user with invalid username and password
     Given payload for creating random user is ready
     When user sends a POST request for creating user
     Then response should be successful with status code <statusCode>
-    When user sends GET request to login with invalid credentials
+    When user sends GET request to logout with invalid credentials
     Then response should be successful with status code <errorStatusCode>
 
 #  400 Invalid username/password supplied

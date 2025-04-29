@@ -12,12 +12,20 @@ public class AssertionsHelpers {
         restAssuredThat(response -> response.body("status", equalTo(expectedStatus)));
     }
 
-    public static void assertPetIdEquals(Long expectedId) {
-        restAssuredThat(response -> response.body("id", equalTo(expectedId.intValue())));
+    public static void assertPetIdEquals(int expectedId) {
+        restAssuredThat(response -> response.body("id", equalTo(expectedId)));
     }
 
     public static void assertResponseStatusCode(int statusCode) {
         restAssuredThat(response -> response.statusCode(statusCode));
+    }
+
+    public static void assertResponseFieldEquals(String field, Object expectedValue) {
+        restAssuredThat(response -> response.body(field, equalTo(expectedValue)));
+    }
+
+    public static void assertFieldContains(String field, String expectedSubstring) {
+//        restAssuredThat(response -> response.body(field, contains(expectedSubstring)));
     }
 
 }

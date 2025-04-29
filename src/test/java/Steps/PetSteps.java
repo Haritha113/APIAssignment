@@ -13,37 +13,17 @@ import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import static org.hamcrest.Matchers.hasKey;
+
 
 public class PetSteps {
 
-
     CommonMethods commonMethods;
-
-
-    @Step
-    public String createPetPayloadByFileRead(String fileName) throws IOException {
-        return Files.readString(Paths.get("src/test/resources/Payloads/"+ fileName));
-
-    }
 
     @Step
     public void createPetRequest(String payload){
         commonMethods.postRequest(payload,EndPoints.CREATE_PET);
-        TestData.petId =SerenityRest.lastResponse().jsonPath().getLong("id");
-    }
-
-    // Method to send the Pet object as JSON in request
-    @Step
-    public Pet createPetPayloadUsingPojo(String fileName) {
-        try {
-            return commonMethods.getPojoFromJson(fileName, Pet.class);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        TestData.petId =SerenityRest.lastResponse().jsonPath().getInt("id");
     }
 
     @Step
@@ -63,7 +43,6 @@ public class PetSteps {
         AssertionsHelpers.assertNameEquals(expectedName);
         AssertionsHelpers.assertStatusEquals(petStatus);
         Assert.assertEquals(expectedCategoryName, SerenityRest.lastResponse().jsonPath().getString("category.name"));
-
     }
 
     @Step
@@ -72,6 +51,7 @@ public class PetSteps {
         return TestData.accessToken;
     }
 
+    @Step
     public void createPetWithAuth(String accessToken) {
         SerenityRest.given()
                 .baseUri(config.getBaseUrl())
@@ -84,19 +64,24 @@ public class PetSteps {
         // TODO - validation fr headers
          }
 
-
-    public void getPetReqById() {
+    @Step
+    public void getPetReqById(int petId) {
         SerenityRest.
                 given()
                 .log().all()
                 .baseUri(config.getBaseUrl())
-                .pathParam("petId",TestData.petId)
+                .pathParam("petId",petId)
                 .basePath(EndPoints.GET_PET_BY_ID)
                 .when()
-                .get();
-        AssertionsHelpers.assertPetIdEquals(TestData.petId);
+                .get().then().log().all();
     }
 
+    @Step
+    public void verifyPetIdInGetPetIdReq(int petId){
+        AssertionsHelpers.assertPetIdEquals(petId);
+    }
+
+    @Step
     public void updatePetReq(String createPetPayload) {
                 SerenityRest.
                         given()
@@ -107,14 +92,14 @@ public class PetSteps {
                         .body(createPetPayload)
                         .when()
                         .put();
-        TestData.petId =SerenityRest.lastResponse().jsonPath().getLong("id");
+        TestData.petId =SerenityRest.lastResponse().jsonPath().getInt("id");
     }
 
     @Step
-    public void updatePetNameAndStatus(String randomPetName,String status) {
+    public void updatePetNameAndStatus(String randomPetName,String status,int petId) {
 
         Pet pet = new Pet();
-        pet.setId((int) TestData.petId);
+        pet.setId(petId);
         pet.setName(randomPetName);
         pet.setStatus(status);
 
@@ -128,7 +113,7 @@ public class PetSteps {
                 .when()
                 .post().then().log().all();
 
-        TestData.petId =SerenityRest.lastResponse().jsonPath().getLong("id");
+        TestData.petId =SerenityRest.lastResponse().jsonPath().getInt("id");
 //        Serenity.setSessionVariable("petId").to(SerenityRest.lastResponse().jsonPath().getLong("id"));
         Serenity.setSessionVariable("petName").to(randomPetName);
         Serenity.setSessionVariable("petStatus").to(status);
@@ -163,20 +148,19 @@ public class PetSteps {
     @Step
     public void verifyPetImage() {
         Assert.assertTrue(SerenityRest.lastResponse().body().asString().contains("uploaded"));
-
     }
 
     @Step
     public void getPetReqByStatus(String status) {
-                SerenityRest.
-                        given()
-                        .queryParam("status", status) // TODO - we can get from json and give status based on that is another approach
-                        .baseUri(config.getBaseUrl())
-                        .basePath(EndPoints.FIND_BY_STATUS)
-                        .when()
-                        .get()
-                        .then()
-                        .log().all();
+        SerenityRest.
+                given()
+                .queryParam("status", status) // TODO - we can get from json and give status based on that is another approach
+                .baseUri(config.getBaseUrl())
+                .basePath(EndPoints.FIND_BY_STATUS)
+                .when()
+                .get()
+                .then()
+                .log().all();
     }
 
     @Step

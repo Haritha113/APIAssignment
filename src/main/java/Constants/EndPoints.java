@@ -15,6 +15,7 @@ public class EndPoints {
     public static final String PLACE_ORDER = "/store/order";
     public static final String GET_ORDER_BY_ID = "/store/order/{orderId}";
     public static final String DELETE_ORDER_BY_ID = "/store/order/{orderId}";
+    public static final String GET_INVENTORY = "/store/inventory";
 
     // USER
     public static final String CREATE_USER = "/user";
@@ -23,7 +24,9 @@ public class EndPoints {
     public static final String DELETE_USER = "/user/{username}";
     public static final String LOGIN_USER = "/user/login";
     public static final String LOGOUT_USER = "/user/logout";
+    public static final String UPDATE_USER = "/user/{username}";
 
     //AUTHORIZATION
 //    public static final String CREATE_TOKEN = "";  // not availble in this swagger
+
 }
