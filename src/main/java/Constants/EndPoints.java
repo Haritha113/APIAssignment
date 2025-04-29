@@ -1,4 +1,4 @@
-package Utils;
+package Constants;
 
 public class EndPoints {
 
@@ -6,6 +6,8 @@ public class EndPoints {
     public static final String CREATE_PET = "/pet";
     public static final String GET_PET_BY_ID = "/pet/{petId}";
     public static final String UPDATE_PET = "/pet";
+    public static final String UPDATE_PET_WITH_FORM_DATA = "/pet/{petId}";
+    public static final String UPDATE_PET_PHOTO = "/pet/{petId}/uploadImage";
     public static final String DELETE_PET_BY_ID = "/pet/{petId}";
     public static final String FIND_BY_STATUS = "/pet/findByStatus";
 
@@ -21,4 +23,7 @@ public class EndPoints {
     public static final String DELETE_USER = "/user/{username}";
     public static final String LOGIN_USER = "/user/login";
     public static final String LOGOUT_USER = "/user/logout";
+
+    //AUTHORIZATION
+//    public static final String CREATE_TOKEN = "";  // not availble in this swagger
 }
