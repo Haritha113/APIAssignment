@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="413fbd36-223b-42b0-acb6-6ca08885b72a" name="Changes" comment="Initial framework setup with one scenario">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Constants/PetConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/POJOs/PetStoreOrder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/POJOs/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Utils/PetUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/StepDefs/PetStoreStepDefs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/StepDefs/UserStepDefs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/Steps/PetStoreSteps.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/Steps/UserSteps.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/Utils/AssertionsHelpers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/Payloads/createPet2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/Payloads/createPet3.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/Pet/createpet.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/Pet/deletepet.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/Pet/getpet.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/Pet/updatepet.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/PetStore/createorder.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/PetStore/getorder.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/User/createuser.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/User/loginuser.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/POJOs/samplepostdata.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/PayloadBuilders/PetPayloadBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/EndPoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Constants/EndPoints.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/StatusCodes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Constants/StatusCodes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/TestData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Runner/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/StepDefs/CreatePetStepDefs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/StepDefs/PetStepDefs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Steps/CreatePetSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Steps/PetSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Utils/CommonMethods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Utils/CommonMethods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/POST/createpet.feature" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Haritha113&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Haritha113/RestAssuredBDD.git&quot;,
+    &quot;accountId&quot;: &quot;fd0fec5a-2b6d-4acd-be09-007055206c59&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2ulCdrjaua5bnr3mquc3UqbhkF8" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.TestRunner.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/haritha/IdeaProjects/Practice/APIAssignment",
+    "onboarding.tips.debug.path": "C:/Users/haritha/IdeaProjects/Practice/RestAssuredBDD/src/main/java/org/example/Main.java"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\haritha\IdeaProjects\Practice\RestAssuredBDD\src\test\java\Runner" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\haritha\IdeaProjects\Practice\RestAssuredBDD\src\test\resources\features\Notes" />
+      <recent name="C:\Users\haritha\IdeaProjects\Practice\RestAssuredBDD\src\test\resources\features" />
+      <recent name="C:\Users\haritha\IdeaProjects\Practice\RestAssuredBDD\src\test\resources\features\Pet" />
+      <recent name="C:\Users\haritha\IdeaProjects\Practice\RestAssuredBDD\src\test\java" />
+      <recent name="C:\Users\haritha\IdeaProjects\Practice\RestAssuredBDD\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="TestRunner" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="RestAssuredBDD" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Runner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Runner" />
+      <option name="MAIN_CLASS_NAME" value="Runner.TestRunner" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.TestRunner" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="413fbd36-223b-42b0-acb6-6ca08885b72a" name="Changes" comment="" />
+      <created>1742813865189</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742813865189</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Initial framework setup with one scenario">
+      <option name="closed" value="true" />
+      <created>1745430751420</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1745430751420</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial framework setup with one scenario" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial framework setup with one scenario" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
