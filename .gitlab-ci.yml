@@ -1,34 +1,20 @@
+image: maven:3.8.5-openjdk-17
+
 stages:
-  - build
   - test
-  - deploy
 
-# Build stage
-build:
-  image: maven:3.6-jdk-8
-  stage: build
-  script:
-    - mvn clean install
-  artifacts:
-    paths:
-      - target/*.jar
+cache:
+  paths:
+    - .m2/repository
 
-# Test stage
-test:
-  image: maven:3.6-jdk-8
+variables:
+  MAVEN_CLI_OPTS: "-B -DskipTests=false"
+
+test_job:
   stage: test
   script:
-    - mvn test
+    - mvn clean verify
   artifacts:
-    paths:
-      - target/test-*.xml
     when: always
-
-# Deploy stage (example deploy to a server)
-deploy:
-  stage: deploy
-  script:
-    - echo "Deploying your app"
-    # Add your deploy script here
-  only:
-    - main
+    paths:
+      - target/site/serenity
