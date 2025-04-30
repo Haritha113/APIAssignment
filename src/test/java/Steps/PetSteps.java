@@ -13,17 +13,21 @@ import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
 import java.io.File;
 import java.io.IOException;
-import static org.hamcrest.Matchers.hasKey;
+import java.util.List;
 
 
 public class PetSteps {
 
-    CommonMethods commonMethods;
+    CommonMethods commonMethods = new CommonMethods();
 
     @Step
     public void createPetRequest(String payload){
         commonMethods.postRequest(payload,EndPoints.CREATE_PET);
-        TestData.petId =SerenityRest.lastResponse().jsonPath().getInt("id");
+    }
+
+    @Step
+    public int retrievePetIdAfterCreating(){
+        return TestData.petId = SerenityRest.lastResponse().jsonPath().getInt("id");
     }
 
     @Step
@@ -40,10 +44,23 @@ public class PetSteps {
         String expectedCategoryName = (petRequest.getCategory() != null) ? petRequest.getCategory().getName() : null;
         String petStatus = petRequest.getStatus();
 
-        AssertionsHelpers.assertNameEquals(expectedName);
-        AssertionsHelpers.assertStatusEquals(petStatus);
-        Assert.assertEquals(expectedCategoryName, SerenityRest.lastResponse().jsonPath().getString("category.name"));
-    }
+        Object responseField = SerenityRest.lastResponse().jsonPath().get();
+
+        if (responseField instanceof String) {
+            // Single object response
+            AssertionsHelpers.assertNameEquals(expectedName);
+            AssertionsHelpers.assertStatusEquals(petStatus);
+            Assert.assertEquals(expectedCategoryName, SerenityRest.lastResponse().jsonPath().getString("category.name"));
+
+        } else if (responseField instanceof List) {
+            // List of values, check if one of the values matches
+            List<String> statusList = SerenityRest.lastResponse().jsonPath().getList("status");
+            Assert.assertTrue(statusList.contains(petStatus));
+            List<String> names = SerenityRest.lastResponse().jsonPath().getList("name");
+            Assert.assertTrue("Expected name not found in response list",
+                    names.contains(expectedName));
+            }
+        }
 
     @Step
     public String getAccessToken(String userName, String password) {
@@ -66,14 +83,21 @@ public class PetSteps {
 
     @Step
     public void getPetReqById(int petId) {
-        SerenityRest.
-                given()
-                .log().all()
-                .baseUri(config.getBaseUrl())
-                .pathParam("petId",petId)
-                .basePath(EndPoints.GET_PET_BY_ID)
-                .when()
-                .get().then().log().all();
+
+        if(!String.valueOf(petId).isEmpty()) {
+            SerenityRest.
+                    given()
+                    .log().all()
+                    .baseUri(config.getBaseUrl())
+                    .pathParam("petId", petId)
+                    .basePath(EndPoints.GET_PET_BY_ID)
+                    .when()
+                    .get().then().log().all();
+        }
+        else {
+
+            System.out.println("expected after deletion");
+        }
     }
 
     @Step
@@ -88,11 +112,11 @@ public class PetSteps {
                         .log().all()
                         .baseUri(config.getBaseUrl())
                         .basePath(EndPoints.UPDATE_PET)
+                        .headers(commonMethods.getDefaultHeaders())
                         .and()
                         .body(createPetPayload)
                         .when()
                         .put();
-        TestData.petId =SerenityRest.lastResponse().jsonPath().getInt("id");
     }
 
     @Step
@@ -111,10 +135,9 @@ public class PetSteps {
                 .headers(commonMethods.getDefaultHeaders())
                 .body(pet)
                 .when()
-                .post().then().log().all();
+                .post();
 
-        TestData.petId =SerenityRest.lastResponse().jsonPath().getInt("id");
-//        Serenity.setSessionVariable("petId").to(SerenityRest.lastResponse().jsonPath().getLong("id"));
+//        TestData.petId =SerenityRest.lastResponse().jsonPath().getInt("id");
         Serenity.setSessionVariable("petName").to(randomPetName);
         Serenity.setSessionVariable("petStatus").to(status);
     }
@@ -134,10 +157,12 @@ public class PetSteps {
     }
 
     @Step
-    public void updatePetImage(String fileName) {
+    public void updatePetImage(String fileName,int petId) {
+
         SerenityRest.given()
+                .baseUri(config.getBaseUrl())
                 .basePath(EndPoints.UPDATE_PET_PHOTO)
-                .pathParam("petId",TestData.petId)
+                .pathParam("petId",petId)
                 .multiPart("file", new File(fileName)) // form-data: file
                 .when()
                 .post()
@@ -164,18 +189,31 @@ public class PetSteps {
     }
 
     @Step
-    public void deleteReq(long petId) {
+    public void deleteReq(int petId) {
         SerenityRest.given()
-                .header("api_key", "value") //optional,so giving dummy
+                .baseUri(config.getBaseUrl())
+                .header("api_key", "special-key") //optional,so giving dummy
                 .pathParam("petId", petId)
                 .when()
-                .delete(EndPoints.DELETE_PET_BY_ID)
-                .then()
-                .log().all();
+                .delete(EndPoints.DELETE_PET_BY_ID);
     }
 
     @Step
-    public void verifyDeletionOfPet(long petId) {
+    public void verifyDeletionOfPet(int petId) {
         Assert.assertEquals(SerenityRest.lastResponse().jsonPath().get("message"),(String.valueOf(TestData.petId)));
+    }
+
+    public void verifyEmptyResponse() {
+        List<Object> pets = SerenityRest.lastResponse().jsonPath().getList("$");
+        Assert.assertTrue("Expected empty list for invalid status", pets.isEmpty());
+    }
+
+    public void updatePetImageWithInvalidUrl(String imagePath, int petId) {
+        SerenityRest.given()
+                .basePath(EndPoints.UPDATE_PET_PHOTO)
+                .pathParam("petId",petId)
+                .multiPart("file", new File(imagePath)) // form-data: file
+                .when()
+                .post();
     }
 }

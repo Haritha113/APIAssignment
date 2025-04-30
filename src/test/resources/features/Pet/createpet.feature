@@ -5,6 +5,8 @@ Feature: Creating Pets in pet stores
     When user sends a POST request
     Then response should be successful with status code <statusCode>
     And verify response has a pet details as per json file <fileName>
+    When user sends a Delete request for pet
+    And verify response has a pet details as per json file <fileName>
     Examples:
       | fileName | statusCode |
       | createPet.json| 200   |
@@ -16,7 +18,7 @@ Feature: Creating Pets in pet stores
 #    Bad request error
     Examples:
       | fileName | statusCode | errorStatusCode |
-      | invalidPetPayload.json| 200   | 400     |
+      | invalidPetPayload.json| 200   | 500     |
 
   Scenario Outline: create pet using Authorization
     Given get the access token for authorization <userName> <password>

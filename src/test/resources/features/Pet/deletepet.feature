@@ -15,4 +15,4 @@ Feature: Delete Pet
 
     Examples:
       | fileName | statusCode |
-      | createPet.json| 200   |
+      | createPet2.json| 200   |

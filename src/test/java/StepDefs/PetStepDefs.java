@@ -10,30 +10,31 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.annotations.Steps;
+import javax.inject.Inject;
 import net.serenitybdd.rest.SerenityRest;
 
 import java.io.IOException;
 
 public class PetStepDefs {
 
+
+//    @Inject
+//    CommonMethods commonMethods;
+
     @Steps
     PetSteps petSteps;
-    CommonMethods commonMethods;
+
+    CommonMethods commonMethods = new CommonMethods();
 
     @Given("^payload for creating pet is ready (.*)$")
     public void validPetPayload(String fileName) throws IOException {
-//        String[] eachFile = fileName.split(",");
-//        for(String file:eachFile) {
             TestData.createPetPayload = commonMethods.createPayloadByFileRead(fileName);
-//        }
-        System.out.println(TestData.createPetPayload);
     }
 
 
     @When("user sends a POST request")
     public void createPetPostRequest() {
         petSteps.createPetRequest(TestData.createPetPayload);
-        TestData.petId = SerenityRest.lastResponse().jsonPath().getInt("id");
     }
 
     @Then("response should be successful with status code {int}")
@@ -60,12 +61,17 @@ public class PetStepDefs {
     @When("^user sends a GET request for pet$")
     public void reqPetByPetId() {
             petSteps.getPetReqById(TestData.petId);
-            petSteps.verifyPetIdInGetPetIdReq(TestData.petId);
+    }
+
+
+    @When("^verify get pet data$")
+    public void verifyPetId() {
+        petSteps.verifyPetIdInGetPetIdReq(petSteps.retrievePetIdAfterCreating());
     }
 
     @When("^user sends a GET request for pet with invalid id$")
     public void reqPetByInvalidPetId() {
-        petSteps.getPetReqById(Integer.parseInt(PetUtil.generateRandomPetName()));
+        petSteps.getPetReqById(PetConstants.invalidId);
     }
 
     @When("^user sends a PUT request with updated pet data (.*)$")
@@ -93,12 +99,17 @@ public class PetStepDefs {
 
     @When("^user sends a PUT request to update pet with image (.*)$")
     public void updatePetImage(String imagePath) {
-        petSteps.updatePetImage(imagePath);
+        petSteps.updatePetImage(imagePath, petSteps.retrievePetIdAfterCreating());
+    }
+
+    @When("^user sends a invalid PUT request to update pet with image (.*)$")
+    public void updatePetWithInvalidUrl(String imagePath) {
+        petSteps.updatePetImageWithInvalidUrl(imagePath, petSteps.retrievePetIdAfterCreating());
     }
 
     @When("user sends a Delete request for pet")
     public void userSendsADeleteRequestForPet() {
-        petSteps.deleteReq(TestData.petId);
+        petSteps.deleteReq(petSteps.retrievePetIdAfterCreating());
     }
 
     @Then("verify pet deletion")
@@ -108,13 +119,17 @@ public class PetStepDefs {
 
     @When("^user sends a GET request for pet by status (.*)$")
     public void getPetByStatus(String status) {
-        petSteps.getPetReqByStatus(status);
+        petSteps.getPetReqByStatus(String.valueOf(status));
     }
 
     @When("user sends a PUT request to update pet name and status with no petid")
     public void updatePetWithNoPetid() {
-        String randomPetName = PetUtil.generateRandomPetName();
         String status = PetConstants.SOLD;
-        petSteps.updatePetNameAndStatus(randomPetName,status,Integer.valueOf(PetUtil.generateRandomPetName()));
+        petSteps.updatePetNameAndStatus(PetUtil.generateRandomPetName(),status,PetUtil.generateRandomId());
+    }
+
+    @Then("verify that response is empty")
+    public void verifyThatResponseIsEmpty() {
+        petSteps.verifyEmptyResponse();
     }
 }

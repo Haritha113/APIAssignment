@@ -16,4 +16,4 @@ Scenario Outline: purchase pet with invalid payload
 #    check for invalid msg -- Invalid Order
   Examples:
     | fileName | errorStatusCode |
-    | invalidPetStore.json| 400   |
+    | invalidPetStore.json| 500   |

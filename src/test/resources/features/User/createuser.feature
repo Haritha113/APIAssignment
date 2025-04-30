@@ -9,7 +9,7 @@ Scenario Outline: create single user
     | statusCode |
     | 200   |
 
-Scenario Outline: create single user
+Scenario Outline: create single user with invalid ata
   Given payload for creating user is ready <fileName>
   When user sends a POST request for creating user
   Then response should be successful with status code <statusCode>

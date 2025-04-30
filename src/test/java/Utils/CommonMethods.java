@@ -51,7 +51,6 @@ public class CommonMethods {
 
     public void postRequest(String payload,String basePath) {
        SerenityRest.given()
-                .log().all()
                 .baseUri(config.getBaseUrl())
                 .basePath(basePath)
                 .headers(getDefaultHeaders())
@@ -80,7 +79,7 @@ public class CommonMethods {
         return headers;
     }
 
-    public void sendPostwithBasicAuth(String username,String password,String basePath){
+    public void sendPostWithBasicAuth(String username, String password, String basePath){
         SerenityRest.given()
                 .auth().basic("username", "password")
                 .basePath(basePath)

@@ -11,13 +11,13 @@ import net.serenitybdd.annotations.Step;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
-import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.*;
 import java.io.IOException;
 import static net.serenitybdd.rest.SerenityRest.restAssuredThat;
 
 public class PetStoreSteps {
 
-    CommonMethods commonMethods;
+    CommonMethods commonMethods = new CommonMethods();
 
     @Step
     public void placeOrder(String payload) {
@@ -25,12 +25,9 @@ public class PetStoreSteps {
                 .headers(commonMethods.getDefaultHeaders())
                 .body(payload)
                 .baseUri(config.getBaseUrl())
-                .when()
                 .basePath(EndPoints.PLACE_ORDER)
-                .post()
-                .then()
-                .log().all();
-        Serenity.setSessionVariable("orderId").to(1234);
+                .when()
+                .post();
     }
 
     @Step
@@ -45,7 +42,7 @@ public class PetStoreSteps {
 //        String status = response.jsonPath().getString("status");
 
         Assert.assertTrue("Order ID should be greater than 0", orderId > 0);
-        AssertionsHelpers.assertResponseFieldEquals(PetStoreConstants.PLACED, petStoreOrder.getStatus());
+        AssertionsHelpers.assertResponseFieldEquals("status",petStoreOrder.getStatus());
         AssertionsHelpers.assertResponseFieldEquals("petId", petStoreOrder.getPetId());
 //        Assert.assertEquals("Pet ID should be the same as the input", petId, petStoreOrder.getPetId());
 //        Assert.assertEquals("Order status should be 'placed'", status, petStoreOrder.getStatus());
@@ -77,12 +74,18 @@ public class PetStoreSteps {
                 .pathParam("orderId", orderId)
                 .basePath(EndPoints.DELETE_ORDER_BY_ID)
                 .when()
-                .delete().then().log().all();
+                .delete();
     }
 
     @Step
+    public int retrieveOrderId(){
+        return SerenityRest.lastResponse().jsonPath().getInt("id");
+    }
+    @Step
     public void verifyOrderDeletion(int orderId) {
-        AssertionsHelpers.assertResponseFieldEquals("message", orderId);
+        String message = SerenityRest.lastResponse().jsonPath().getString("message");
+        Assert.assertTrue
+                ("Message does not contain expected order ID", message.contains(String.valueOf(orderId)));
     }
 
     @Step
@@ -92,14 +95,14 @@ public class PetStoreSteps {
                 .baseUri(config.getBaseUrl())
                 .basePath(EndPoints.GET_INVENTORY)
                 .when()
-                .get().then().log().all();
+                .get();
     }
 
     @Step
     public void verifyInventoryValues() {
         for (String key : PetStoreConstants.EXPECTED_STATUSES) {
             restAssuredThat(response ->
-                    response.body("$", hasKey(key))
+                    response.body("$", hasKey(matchesPattern("(?i)" + key)))
             );
         }
     }

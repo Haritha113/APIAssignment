@@ -11,7 +11,7 @@ Scenario Outline: get order info
 
   Examples:
   | fileName | statusCode |
-  | purchasePet.json| 200   |
+  | purchasePet2.json| 200   |
 
 
 Scenario Outline: get order with invalid orderid
@@ -20,11 +20,12 @@ Scenario Outline: get order with invalid orderid
   Then response should be successful with status code <statusCode>
   When user sends a GET request with invalid order id
   Then response should be successful with status code <errorStatusCode>
+
 #    404 Order not found
 
   Examples:
     | fileName | statusCode | errorStatusCode |
-    | purchasePet.json|404  | 404             |
+    | purchasePet2.json|200  | 404             |
 
 Scenario Outline: get inventory info
   Given payload for purchasing pet is ready <fileName>
@@ -33,11 +34,10 @@ Scenario Outline: get inventory info
   When user sends a GET inventory request
   Then response should be successful with status code <statusCode>
   Then inventory map should contain expected keys
-#  expected keys from constants
 
   Examples:
     | fileName | statusCode |
-    | purchasePet.json| 200   |
+    | purchasePet2.json| 200   |
 
 Scenario Outline: get inventory details with invalid data
   Given payload for purchasing pet is ready <fileName>

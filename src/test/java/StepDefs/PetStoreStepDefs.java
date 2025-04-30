@@ -19,7 +19,7 @@ public class PetStoreStepDefs {
 
     @Steps
     PetStoreSteps petStoreSteps;
-    CommonMethods commonMethods;
+    CommonMethods commonMethods = new CommonMethods();
 
     @Given("^payload for purchasing pet is ready (.*)$")
     public void validPetStorePayload(String fileName) throws IOException {
@@ -40,12 +40,14 @@ public class PetStoreStepDefs {
 
     @When("user sends a GET request to get order details")
     public void getOrderDetails() {
-        petStoreSteps.reqGetOrderDetails(Serenity.sessionVariableCalled("orderId"));
+        TestData.petStoreId = petStoreSteps.retrieveOrderId();
+        petStoreSteps.reqGetOrderDetails(TestData.petStoreId);
     }
 
     @Then("verify order info")
     public void verifyOrderInfo() {
-        petStoreSteps.verifyOrder(Serenity.sessionVariableCalled("orderId"));
+        TestData.petStoreId = petStoreSteps.retrieveOrderId();
+        petStoreSteps.verifyOrder(TestData.petStoreId);
     }
 
     @When("user sends a GET request with invalid order id")
@@ -55,12 +57,13 @@ public class PetStoreStepDefs {
 
     @When("user sends a DELETE request to delete order details")
     public void deleteOrderDetails() {
-        petStoreSteps.deleteOrderByID(Serenity.sessionVariableCalled("orderId"));
+        TestData.petStoreId = petStoreSteps.retrieveOrderId();
+        petStoreSteps.deleteOrderByID(TestData.petStoreId);
     }
 
     @Then("verify message contains deleted order ID")
     public void verifyOrderDeletion() {
-        petStoreSteps.verifyOrderDeletion(Serenity.sessionVariableCalled("orderId"));
+        petStoreSteps.verifyOrderDeletion(TestData.petStoreId);
     }
 
     @When("^user sends a DELETE request to delete order details with invalid id$")
