@@ -16,4 +16,5 @@ public class TestData {
 
 
     public static String  sessionToken;
+    public static int petStoreId;
 }

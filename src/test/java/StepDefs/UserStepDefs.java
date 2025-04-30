@@ -18,7 +18,7 @@ public class UserStepDefs {
 
     @Steps
     UserSteps userSteps;
-    CommonMethods commonMethods;
+    CommonMethods commonMethods = new CommonMethods();
 
     @Given("^payload for creating random user is ready$")
     public void validUserPayload() {
@@ -37,8 +37,8 @@ public class UserStepDefs {
     }
 
     @Given("^payload for creating user is ready (.*)$")
-    public void createUserWithJson(String fileName) {
-        TestData.createUserPayload = commonMethods.mapPayloadToPojo(fileName, User.class);
+    public void createUserWithJson(String fileName) throws IOException {
+        TestData.createUserPayload = commonMethods.createPayloadByFileRead(fileName);
         System.out.println(TestData.createUserPayload);
     }
 
@@ -90,7 +90,7 @@ public class UserStepDefs {
     @When("user sends GET request to login with invalid credentials")
     public void loginWithInvalidCredentials() {
 //        giving random strings from util class
-        userSteps.login(UserUtil.generateRandomLastName(),UserUtil.generateRandomEmail());
+        userSteps.login(UserUtil.generateRandomLastName(),UserUtil.generateRandomPhone());
     }
 
     @When("user sends GET request to logout")

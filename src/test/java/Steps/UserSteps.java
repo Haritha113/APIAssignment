@@ -7,7 +7,7 @@ import Utils.TestData;
 import Utils.UserUtil;
 import Utils.config;
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.cucumber.java.it.Ed;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.core.Serenity;
@@ -16,11 +16,10 @@ import org.junit.Assert;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserSteps {
 
-    CommonMethods commonMethods;
+    CommonMethods commonMethods = new CommonMethods();
 
     @Step
     public void createUser(Object createUserPayload) {
@@ -47,7 +46,10 @@ public class UserSteps {
     }
 
     @Step
-    public User generateRandomDataForUser() {
+    public String generateRandomDataForUser() {
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+
         User user = new User();
         user.setId(UserUtil.generateRandomId());
         user.setUsername(UserUtil.generateRandomUsername());
@@ -62,7 +64,12 @@ public class UserSteps {
         Serenity.setSessionVariable("expectedUser").to(user.getUsername());
         Serenity.setSessionVariable("expectedEmail").to(user.getEmail());
 
-        return user;
+        try {
+            return objectMapper.writeValueAsString(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 
